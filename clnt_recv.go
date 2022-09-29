@@ -21,8 +21,8 @@ func proc_recv_msg(Conn net.Conn) {
 			log.Println(error.Error())
 			break
 		}
-
-		fmt.Printf("Receive From Server >> %s\n", string(recv[:n]))
-		recv = nil
+		if n > 0 {
+			fmt.Printf("%s\n", string(recv[:n]))
+		}
 	}
 }
