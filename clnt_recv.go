@@ -23,5 +23,6 @@ func proc_recv_msg(Conn net.Conn) {
 		}
 
 		fmt.Printf("Receive From Server >> %s\n", string(recv[:n]))
+		recv = nil
 	}
 }
