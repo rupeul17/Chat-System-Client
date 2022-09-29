@@ -18,8 +18,9 @@ func main() {
 	fmt.Println("OK, Connecting to Server Success...")
 	fmt.Println("Entered Your Msg to below.")
 
+	go proc_send_msg(conn)
+	go proc_recv_msg(conn)
 	for {
-		go proc_send_msg(conn)
-		go proc_recv_msg(conn)
+
 	}
 }
