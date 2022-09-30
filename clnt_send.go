@@ -9,8 +9,20 @@ import (
 func proc_send_msg(conn net.Conn) {
 
 	for {
-		send := input_string()
-		_, error := conn.Write([]byte(send))
+		send_msg := input_string()
+
+		msg := MyMsg{
+			Head: Header{
+				MsgType: 1,
+				Ip:      conn.LocalAddr().String(),
+				BodyLen: len(send_msg),
+			},
+			Body: []byte(send_msg),
+		}
+
+		bytedata := EncodeToBytes(msg)
+
+		_, error := conn.Write(bytedata)
 		if error != nil {
 			log.Println(error.Error())
 		}
