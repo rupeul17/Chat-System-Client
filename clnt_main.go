@@ -16,6 +16,12 @@ func main() {
 	}
 
 	fmt.Println("OK, Connecting to Server Success...")
+
+	if proc_login(conn) < 0 {
+		log.Println("login failed...")
+		os.Exit(0)
+	}
+
 	fmt.Println("Entered Your Msg to below.")
 
 	go proc_send_msg(conn)
