@@ -25,10 +25,10 @@ func proc_recv_login_resopnse(conn net.Conn) int {
 
 			serv_msg := DecodeToMyMsg(recv)
 
-			if serv_msg.Head.res == 200 {
+			if serv_msg.Head.Res == 200 {
 				return 1
 			} else {
-				fmt.Printf("Login failed..., msgtype(%d), ip(%s), res(%d) ", serv_msg.Head.MsgType, serv_msg.Head.Ip, serv_msg.Head.res)
+				fmt.Printf("Login failed...\n")
 				return -1
 			}
 		}

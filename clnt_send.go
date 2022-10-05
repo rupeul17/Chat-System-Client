@@ -1,14 +1,16 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net"
+	"sync"
 	"time"
 )
 
-func proc_send_msg(conn net.Conn) {
+func proc_send_msg(conn net.Conn, wg *sync.WaitGroup) {
 
-	for {
+	for ServiceFlag == 1 {
 		send_msg := input_string()
 
 		msg := MyMsg{
@@ -29,4 +31,7 @@ func proc_send_msg(conn net.Conn) {
 
 		time.Sleep(1 * time.Second)
 	}
+
+	fmt.Println("send_msg goroutine exiting...")
+	wg.Done()
 }
