@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"log"
@@ -8,7 +9,7 @@ import (
 	"sync"
 )
 
-func proc_recv_msg(Conn net.Conn, wg *sync.WaitGroup) {
+func ReceiveMessageToServer(Conn net.Conn, wg *sync.WaitGroup) {
 
 	/*serv_msg := make(map[string]MyMsg)*/
 	recv := make([]byte, 4096)
@@ -23,11 +24,15 @@ func proc_recv_msg(Conn net.Conn, wg *sync.WaitGroup) {
 			log.Println(error.Error())
 			break
 		}
+
 		if n > 0 {
 
 			serv_msg := DecodeToMyMsg(recv)
 
-			fmt.Printf("(%s) >> %s\n", serv_msg.Head.Ip, serv_msg.Body)
+			inputdata := MsgInfo{}
+			json.Unmarshal([]byte(serv_msg.Body), &inputdata)
+
+			fmt.Printf("(%s) %s\n", inputdata.Id, inputdata.Message)
 		}
 	}
 

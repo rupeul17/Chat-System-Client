@@ -1,13 +1,14 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"log"
 	"net"
 )
 
-func proc_recv_login_resopnse(conn net.Conn) int {
+func ReceiveLoginResponseFromServer(conn net.Conn) int {
 
 	recv := make([]byte, 4096)
 
@@ -25,7 +26,7 @@ func proc_recv_login_resopnse(conn net.Conn) int {
 
 			serv_msg := DecodeToMyMsg(recv)
 
-			if serv_msg.Head.Res == 200 {
+			if serv_msg.Head.Res == OK {
 				return 1
 			} else {
 				fmt.Printf("Login failed...\n")
@@ -37,9 +38,7 @@ func proc_recv_login_resopnse(conn net.Conn) int {
 	return -1
 }
 
-func proc_login(conn net.Conn) int {
-
-	var LoginInfo Login
+func TryLogin(conn net.Conn) int {
 
 	fmt.Printf("Entered Your ID : ")
 	LoginInfo.Id = input_string()
@@ -47,15 +46,14 @@ func proc_login(conn net.Conn) int {
 	fmt.Printf("Entered Your Passwd : ")
 	LoginInfo.Pwd = input_string()
 
-	send_msg := EncodeToBytes(LoginInfo)
+	jsondata, _ := json.Marshal(LoginInfo)
 
 	msg := MyMsg{
 		Head: Header{
-			MsgType: 2,
-			Ip:      conn.LocalAddr().String(),
-			BodyLen: len(send_msg),
+			MsgType: TYPE_LOGIN,
+			BodyLen: len(jsondata),
 		},
-		Body: []byte(send_msg),
+		Body: jsondata,
 	}
 
 	bytedata := EncodeToBytes(msg)
@@ -66,7 +64,7 @@ func proc_login(conn net.Conn) int {
 		return -1
 	}
 
-	if proc_recv_login_resopnse(conn) < 0 {
+	if ReceiveLoginResponseFromServer(conn) < 0 {
 		return -1
 	} else {
 		return 1

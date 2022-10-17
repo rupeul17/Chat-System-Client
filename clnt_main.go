@@ -14,6 +14,7 @@ import (
 	global variable
 */
 var ServiceFlag int
+var LoginInfo Login
 
 func main() {
 
@@ -30,18 +31,19 @@ func main() {
 		os.Exit(0)
 	}
 
-	fmt.Println("OK, Connecting to Server Success...")
-
-	if proc_login(conn) < 0 {
+	/*
+		Login 정보 (ID, PW) 를 입력받아 Server 로 전송한다.
+	*/
+	if TryLogin(conn) < 0 {
 		log.Println("login failed...")
 		os.Exit(0)
+	} else {
+		fmt.Println("Login Success. Entered Your Msg to below.")
 	}
 
-	fmt.Println("Entered Your Msg to below.")
-
 	wg.Add(4)
-	go proc_send_msg(conn, &wg)
-	go proc_recv_msg(conn, &wg)
+	go SendMessageToServer(conn, &wg)
+	go ReceiveMessageToServer(conn, &wg)
 	go func() {
 		/*
 			signal check
