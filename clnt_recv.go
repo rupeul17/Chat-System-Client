@@ -9,7 +9,7 @@ import (
 	"sync"
 )
 
-func ReceiveMessageToServer(Conn net.Conn, wg *sync.WaitGroup) {
+func ResponseHandler(Conn net.Conn, wg *sync.WaitGroup) {
 
 	/*serv_msg := make(map[string]MyMsg)*/
 	recv := make([]byte, 4096)

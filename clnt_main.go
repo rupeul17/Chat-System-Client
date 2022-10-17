@@ -38,12 +38,13 @@ func main() {
 		log.Println("login failed...")
 		os.Exit(0)
 	} else {
+		ClearTerminal()
 		fmt.Println("Login Success. Entered Your Msg to below.")
 	}
 
 	wg.Add(4)
-	go SendMessageToServer(conn, &wg)
-	go ReceiveMessageToServer(conn, &wg)
+	go RequestHandler(conn, &wg)
+	go ResponseHandler(conn, &wg)
 	go func() {
 		/*
 			signal check

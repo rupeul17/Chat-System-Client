@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func SendMessageToServer(conn net.Conn, wg *sync.WaitGroup) {
+func RequestHandler(conn net.Conn, wg *sync.WaitGroup) {
 
 	for ServiceFlag == 1 {
 		fmt.Printf(">> ")
